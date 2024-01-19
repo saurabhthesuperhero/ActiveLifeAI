@@ -1,8 +1,7 @@
+
 import streamlit as st
 import constants as const  # Importing constants
 from helpers import call_clarifai_api
-
-st.set_page_config(layout="wide")  # Expands the page to full width
 
 # Initialize session state variables
 if 'exercise_routine' not in st.session_state:
@@ -10,11 +9,9 @@ if 'exercise_routine' not in st.session_state:
 if 'diet_routine' not in st.session_state:
     st.session_state['diet_routine'] = None
 
-
 # Function to download text content as a PDF (dummy implementation)
 def download_text_as_pdf(text, filename):
     st.write(f"Download {filename} as PDF")  # Replace with actual download logic
-
 
 # Function to display routines in the sidebar
 def display_sidebar_routines():
@@ -44,62 +41,55 @@ def display_sidebar_routines():
             else:
                 st.write("No diet routine available.")
 
-
 # Streamlit UI
 st.title("AI ActiveLife")
 
-# Main horizontal split: Input Mode and Result Mode
-input_mode, result_mode = st.columns([1, 2])  # Adjusted ratio for better space utilization
-
-# Input Mode
-with input_mode:
-    st.header("Input Mode")
+# Static Input Section
+with st.container():
     height = st.number_input("Enter your height in meters", min_value=0.5, max_value=3.0)
     weight = st.number_input("Enter your weight in kilograms", min_value=30, max_value=250)
     age = st.number_input("Enter your age", min_value=12, max_value=100)
     preferred_food_style = st.text_input("Enter your preferred food style (e.g., Indian, Mediterranean, etc.)")
     favorite_dishes = st.text_input("Enter your favorite dishes")
 
-# Result Mode - Two Columns for Exercise and Diet Routines
-with result_mode:
-    st.header("Result Mode")
-    exercise_col, diet_col = st.columns(2)
-
-    with exercise_col:
-        st.subheader("Exercise Routine")
-        if st.button('Get Exercise Routine'):
-            if height and weight:
-                bmi = weight / (height ** 2)
-                st.write("Your BMI is:", bmi)
-                exercise_prompt = const.get_exercise_prompt(bmi)
-                with st.spinner('Generating your personalized exercise routine...'):
-                    exercise_routine, error = call_clarifai_api(exercise_prompt)
-                    if error:
-                        st.error(error)
-                    else:
-                        st.session_state['exercise_routine'] = exercise_routine
-
-        if st.session_state['exercise_routine']:
-            with st.expander("See your Exercise Routine"):
-                st.write("**Personalized Exercise Routine:**")
-                st.write(st.session_state['exercise_routine'])
-
-    with diet_col:
-        st.subheader("Diet Routine")
-        if st.button('Get Diet Routine'):
-            if preferred_food_style and favorite_dishes:
-                diet_prompt = const.get_diet_prompt(age, preferred_food_style, favorite_dishes)
-                with st.spinner('Generating your personalized diet routine...'):
-                    diet_routine, error = call_clarifai_api(diet_prompt)
-                    if error:
-                        st.error(error)
-                    else:
-                        st.session_state['diet_routine'] = diet_routine
-
-        if st.session_state['diet_routine']:
-            with st.expander("See your Diet Routine"):
-                st.write("**Personalized Diet Routine:**")
-                st.write(st.session_state['diet_routine'])
-
 # Sidebar
 display_sidebar_routines()
+
+# Columns for Routines
+col1, col2 = st.columns(2)
+
+with col1:
+    st.header("Exercise Routine")
+    if st.button('Get Exercise Routine'):
+        if height and weight:
+            bmi = weight / (height ** 2)
+            st.write("Your BMI is:", bmi)
+            exercise_prompt = const.get_exercise_prompt(bmi)
+            with st.spinner('Generating your personalized exercise routine...'):
+                exercise_routine, error = call_clarifai_api(exercise_prompt)
+                if error:
+                    st.error(error)
+                else:
+                    st.session_state['exercise_routine'] = exercise_routine
+
+    if st.session_state['exercise_routine']:
+        with st.expander("See your Exercise Routine"):
+            st.write("**Personalized Exercise Routine:**")
+            st.write(st.session_state['exercise_routine'])
+
+with col2:
+    st.header("Diet Routine")
+    if st.button('Get Diet Routine'):
+        if preferred_food_style and favorite_dishes:
+            diet_prompt = const.get_diet_prompt(age, preferred_food_style, favorite_dishes)
+            with st.spinner('Generating your personalized diet routine...'):
+                diet_routine, error = call_clarifai_api(diet_prompt)
+                if error:
+                    st.error(error)
+                else:
+                    st.session_state['diet_routine'] = diet_routine
+
+    if st.session_state['diet_routine']:
+        with st.expander("See your Diet Routine"):
+            st.write("**Personalized Diet Routine:**")
+            st.write(st.session_state['diet_routine'])
