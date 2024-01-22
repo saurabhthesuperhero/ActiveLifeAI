@@ -19,10 +19,14 @@ def get_exercise_prompt(bmi, gender, goals):
     - Designed to target major muscle groups (upper body, lower body, core).
     - Includes clear instructions and variations for different difficulty levels.
     - Consider user preferences for specific exercises or areas of focus (if available).
-
+    NOTE: DO ALWAYS PROVIDE FULL WORKOUT MINIMUM and LONGER RESPONSE
     Example response:
 
-    Given the user's BMI of {bmi}, here's a 30-minute bodyweight exercise routine that combines cardio, strength training, and core work:
+    Given the user's BMI of {bmi},
+     Your Body Falls in 'Overweight' Category which is Not good.
+     So 
+     here's a 30-minute bodyweight exercise routine that combines cardio, strength training, and core work:
+
 
     Warm-up (5 minutes):
     - Jumping jacks (30 seconds)
