@@ -86,7 +86,20 @@ input_mode, result_mode = st.columns([1, 2])  # Adjusted ratio for better space 
 # Input Mode
 with input_mode:
     st.header("Input Mode")
-    height = st.number_input("Enter your height in meters", min_value=0.5, max_value=3.0)
+    # Using selectbox for unit selection
+    height_unit = st.selectbox("Select the unit for height:", ['Meters', 'Feet and Inches'])
+
+    if height_unit == 'Meters':
+        height = st.number_input("Enter your height in meters", min_value=0.5, max_value=3.0)
+    else:
+        st.write("Enter your height:")
+        col1, col2 = st.columns(2)
+        with col1:
+            feet = st.number_input("Feet", min_value=1, max_value=8)
+        with col2:
+            inches = st.number_input("Inches", min_value=0, max_value=11)
+        height = (feet * 0.3048) + (inches * 0.0254)  # Convert feet and inches to meters
+
     weight = st.number_input("Enter your weight in kilograms", min_value=30, max_value=250)
     age = st.number_input("Enter your age", min_value=12, max_value=100)
     preferred_food_style = st.text_input("Enter your preferred food style (e.g., Indian, Mediterranean, etc.)")
@@ -107,7 +120,8 @@ with result_mode:
 
     with exercise_col:
         st.subheader("Exercise Routine")
-        if st.button('Get Exercise Routine'):
+        st.write("Click below to generate your personalized exercise routine 👇")
+        if st.button('🏋️ GET EXERCISE ROUTINE'):
             # Check if the necessary fields are filled
             if not st.session_state['gender'] or not st.session_state['health_goals']:
                 st.error("Please select your gender and at least one health goal to get your exercise routine.")
@@ -132,8 +146,8 @@ with result_mode:
 
     with diet_col:
         st.subheader("Diet Routine")
-        if st.button('Get Diet Routine'):
-            # Check if the necessary fields are filled
+        st.write("Click below to get your personalized diet plan 👇")
+        if st.button('🍽️ GET DIET ROUTINE'):            # Check if the necessary fields are filled
             if not preferred_food_style or not favorite_dishes:
                 st.error("Please enter your preferred food style and favorite dishes to get your diet routine.")
             else:
