@@ -10,6 +10,10 @@ if 'exercise_routine' not in st.session_state:
 if 'diet_routine' not in st.session_state:
     st.session_state['diet_routine'] = None
 
+if 'gender' not in st.session_state:
+    st.session_state['gender'] = None
+if 'health_goals' not in st.session_state:
+    st.session_state['health_goals'] = []
 
 # Function to download text content as a PDF (dummy implementation)
 def download_text_as_pdf(text, filename):
@@ -59,6 +63,14 @@ with input_mode:
     age = st.number_input("Enter your age", min_value=12, max_value=100)
     preferred_food_style = st.text_input("Enter your preferred food style (e.g., Indian, Mediterranean, etc.)")
     favorite_dishes = st.text_input("Enter your favorite dishes")
+    st.session_state['gender'] = st.radio(
+        "Select your gender",
+        ('Male', 'Female', 'Other'))
+
+    # Health Goals Selection
+    st.session_state['health_goals'] = st.multiselect(
+        "Select your health goals",
+        ['Healthy Living', 'Lose Weight', 'Gain Muscle', 'Improve Fitness'])
 
 # Result Mode - Two Columns for Exercise and Diet Routines
 with result_mode:
@@ -71,7 +83,8 @@ with result_mode:
             if height and weight:
                 bmi = weight / (height ** 2)
                 st.write("Your BMI is:", bmi)
-                exercise_prompt = const.get_exercise_prompt(bmi)
+                # Updated to pass gender and health_goals to the function
+                exercise_prompt = const.get_exercise_prompt(bmi, st.session_state['gender'], st.session_state['health_goals'])
                 with st.spinner('Generating your personalized exercise routine...'):
                     exercise_routine, error = call_clarifai_api(exercise_prompt)
                     if error:
@@ -88,7 +101,8 @@ with result_mode:
         st.subheader("Diet Routine")
         if st.button('Get Diet Routine'):
             if preferred_food_style and favorite_dishes:
-                diet_prompt = const.get_diet_prompt(age, preferred_food_style, favorite_dishes)
+                # Updated to pass gender and health_goals to the function
+                diet_prompt = const.get_diet_prompt(age, preferred_food_style, favorite_dishes, st.session_state['gender'], st.session_state['health_goals'])
                 with st.spinner('Generating your personalized diet routine...'):
                     diet_routine, error = call_clarifai_api(diet_prompt)
                     if error:
@@ -100,6 +114,7 @@ with result_mode:
             with st.expander("See your Diet Routine"):
                 st.write("**Personalized Diet Routine:**")
                 st.write(st.session_state['diet_routine'])
+
 
 # Sidebar
 display_sidebar_routines()

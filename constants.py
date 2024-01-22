@@ -4,14 +4,16 @@ USER_ID = "openai"
 APP_ID = "chat-completion"
 # MODEL_ID = "GPT-4"
 # MODEL_VERSION_ID = "5d7a50b44aec4a01a9c492c5a5fcf387"
-MODEL_ID = "GPT-3_5-turbo"
-MODEL_VERSION_ID = "4471f26b3da942dab367fe85bc0f7d21"
+# MODEL_ID = "GPT-3_5-turbo"
+# MODEL_VERSION_ID = "4471f26b3da942dab367fe85bc0f7d21"
+MODEL_ID = 'openai-gpt-4-vision'
+MODEL_VERSION_ID = '266df29bc09843e0aee9b7bf723c03c2'
 
 
 # Exercise Prompt Template
-def get_exercise_prompt(bmi):
+def get_exercise_prompt(bmi, gender, goals):
     return f"""
-    Based on the user's BMI ({bmi}), provide a personalized bodyweight exercise routine that is:
+    Based on the user's BMI ({bmi}),gender ({gender} and goals ({goals} provide a personalized bodyweight exercise routine that is:
     - Safe and effective for their current fitness level (if known).
     - Engaging and enjoyable to prevent boredom.
     - Designed to target major muscle groups (upper body, lower body, core).
@@ -48,7 +50,7 @@ def get_exercise_prompt(bmi):
     """
 
 
-def get_diet_prompt(age, preferred_food_style, favorite_dishes):
+def get_diet_prompt(age, preferred_food_style, favorite_dishes, gender, goals):
     return f"""
-    Based on the user's age ({age}), preferred food style ({preferred_food_style}), and favorite dishes ({favorite_dishes}), provide a personalized and healthy diet plan.
+    Based on the user's age ({age}), gender ({gender}), preferred food style ({preferred_food_style}), favorite dishes ({favorite_dishes}), and health goals ({', '.join(goals)}), provide a personalized and healthy diet plan that addresses those goals effectively.
     """

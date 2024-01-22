@@ -24,6 +24,7 @@ def call_clarifai_api(prompt):
         if response.status.code != status_code_pb2.SUCCESS:
             return None, f"Clarifai API error: {response.status.description}"
         else:
+            print(response.outputs[0].data.text.raw)
             return response.outputs[0].data.text.raw, None
     except Exception as e:
         return None, str(e)
