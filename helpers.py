@@ -8,7 +8,7 @@ def call_clarifai_api(prompt):
     try:
         channel = ClarifaiChannel.get_grpc_channel()
         stub = service_pb2_grpc.V2Stub(channel)
-        metadata = (('authorization', 'Key ' + const.PAT),)
+        metadata = (('authorization', 'Key ' + const.CLARIFAI_PAT),)
         userDataObject = resources_pb2.UserAppIDSet(user_id=const.USER_ID, app_id=const.APP_ID)
 
         response = stub.PostModelOutputs(

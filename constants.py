@@ -1,11 +1,9 @@
 # Constants for Clarifai API
-PAT = "993735bd0d62446db97ae870027e8767"
+import os
+
+CLARIFAI_PAT = os.environ.get("CLARIFAI_PAT")
 USER_ID = "openai"
 APP_ID = "chat-completion"
-# MODEL_ID = "GPT-4"
-# MODEL_VERSION_ID = "5d7a50b44aec4a01a9c492c5a5fcf387"
-# MODEL_ID = "GPT-3_5-turbo"
-# MODEL_VERSION_ID = "4471f26b3da942dab367fe85bc0f7d21"
 MODEL_ID = 'openai-gpt-4-vision'
 MODEL_VERSION_ID = '266df29bc09843e0aee9b7bf723c03c2'
 
