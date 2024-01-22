@@ -17,7 +17,7 @@ def get_exercise_prompt(bmi, gender, goals):
     - Designed to target major muscle groups (upper body, lower body, core).
     - Includes clear instructions and variations for different difficulty levels.
     - Consider user preferences for specific exercises or areas of focus (if available).
-    NOTE: DO ALWAYS PROVIDE FULL WORKOUT MINIMUM and LONGER RESPONSE
+    NOTE: DO ALWAYS PROVIDE FULL WORKOUT MINIMUM and LONGER RESPONSE AND ALWAYS MENTION ABOUT HOW THEIR BMI IS UNDERWEIGHT , OVERWEIGHT or WHAT ?  
     Example response:
 
     Given the user's BMI of {bmi},
